@@ -9,16 +9,18 @@ public class UDPClient{
 			aSocket = new DatagramSocket();
 			byte[] m = args[0].getBytes();
 			InetAddress aHost = InetAddress.getByName(args[1]);
-
+			int quantidade = Integer.parseInt(args[2]);
+			int tamanhoBuffer = Integer.parseInt(args[3]);
 			int serverPort = 6789;
 			DatagramPacket request = new DatagramPacket(m, m.length, aHost, serverPort);
-			aSocket.send(request);
-
-			byte[] buffer = new byte[100];
-			DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-			aSocket.receive(reply);
-
-			System.out.println("Reply: " + new String(reply.getData()));
+			for (int i = 0; i < quantidade; i++) {
+				System.out.print(i +"º request ");
+				aSocket.send(request);
+				byte[] buffer = new byte[tamanhoBuffer];
+				DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+				aSocket.receive(reply);
+				System.out.println("Reply: " + new String(reply.getData()) +"\n");
+			}
 		}catch (SocketException e){
 			System.out.println("SocketException: " + e.getMessage());
 		}catch (IOException e){

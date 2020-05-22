@@ -6,7 +6,8 @@ public class UDPServer{
           DatagramSocket aSocket = null;
           try{
                aSocket = new DatagramSocket(6789);
-               byte[] buffer = new byte[100];
+               byte[] buffer = new byte[10000];
+
                System.out.println("Vou entrar no loop infinito");
                System.out.println(aSocket.getInetAddress());
                System.out.println(InetAddress.getLocalHost());
@@ -14,8 +15,9 @@ public class UDPServer{
                     DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                     aSocket.receive(request);
                     DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(), request.getPort());
-                    if(reply != null)
-                         System.out.println("Vou responder: " + request.getAddress());
+                    System.out.println("Mensagem recebida do cliente cujo endereco eh: " + request.getAddress() + " pela porta: " + request.getPort());
+                    String received = new String(reply.getData(), 0, reply.getLength());
+                    System.out.println("Conteudo: " + received);
                     aSocket.send(reply);
                }
           }catch (SocketException e){
